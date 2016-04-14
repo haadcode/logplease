@@ -4,9 +4,6 @@ const fs = require('fs');
 
 const isNodejs = process.version ? true : false;
 
-// Default log level
-let GlobalLogLevel = LogLevels.DEBUG;
-
 const LogLevels = {
   'DEBUG': 'DEBUG',
   'INFO':  'INFO',
@@ -14,6 +11,9 @@ const LogLevels = {
   'ERROR': 'ERROR',
   'NONE':  'NONE',
 };
+
+// Default log level
+let GlobalLogLevel = LogLevels.DEBUG;
 
 // ANSI colors
 let Colors = {
