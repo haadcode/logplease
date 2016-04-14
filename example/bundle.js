@@ -277,10 +277,17 @@
 	};
 
 	/* Public API */
-	exports.Colors = Colors;
-	exports.LogLevel = LogLevels;
-	exports.setLogLevel = (level) => GlobalLogLevel =  level;
-	exports.create = (category, options) => new Logger(category, options);
+	// exports.Colors = Colors;
+	// exports.LogLevel = LogLevels;
+	// exports.setLogLevel = (level) => GlobalLogLevel =  level;
+	// exports.create = (category, options) => new Logger(category, options);
+
+	module.exports = {
+	  Colors: Colors,
+	  LogLevel: LogLevels,
+	  setLogLevel: (level) => GlobalLogLevel = level,
+	  create: (category, options) => new Logger(category, options),
+	};
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 

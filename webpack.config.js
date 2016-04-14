@@ -1,7 +1,11 @@
+const webpack = require('webpack');
+
 module.exports = {
   entry: './src/index.js',
   output: {
-    filename: './dist/index.js'
+    libraryTarget: 'var',
+    library: 'Logger',
+    filename: './dist/logplease.min.js'
   },
   resolve: {
     alias: {
@@ -11,5 +15,23 @@ module.exports = {
   node: {
     console: false,
     process: 'mock'
+  },
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin({
+      mangle: true,
+      compress: { warnings: false }
+    })
+  ],
+  module: {
+    loaders: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel',
+        query: {
+          presets: ['es2015']
+        }
+      }
+    ]
   }
 };
