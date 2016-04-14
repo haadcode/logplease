@@ -94,7 +94,7 @@
 
 	const fs = __webpack_require__(4);
 
-	const isNodejs = process.env.NODE ? true : false;
+	const isNodejs = process.version ? true : false;
 
 	const LogLevels = {
 	  'DEBUG': 'DEBUG',

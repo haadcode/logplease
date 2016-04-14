@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 
-const isNodejs = process.env.NODE ? true : false;
+const isNodejs = process.version ? true : false;
 
 const LogLevels = {
   'DEBUG': 'DEBUG',
