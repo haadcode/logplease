@@ -1,0 +1,24 @@
+{
+  "name": "logplease",
+  "version": "1.0.0",
+  "description": "Simple Javascript logger for Node.js and Browsers",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haadcode/logplease.git"
+  },
+  "keywords": [
+    "log",
+    "logger",
+    "logging"
+  ],
+  "author": "Haad",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/haadcode/logplease/issues"
+  },
+  "homepage": "https://github.com/haadcode/logplease#readme"
+}
