@@ -195,6 +195,8 @@ class Logger {
 module.exports = {
   Colors: Colors,
   LogLevel: LogLevels,
-  setLogLevel: (level) => GlobalLogLevel = level,
+  setLogLevel: (level) => {
+    GlobalLogLevel = level
+  },
   create: (category, options) => new Logger(category, options),
 };
