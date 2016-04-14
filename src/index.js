@@ -1,7 +1,8 @@
 'use strict';
 
-const fs     = require('fs');
-const stream = require('stream');
+const fs = require('fs');
+
+const isNodejs = process.env.NODE ? true : false;
 
 const LogLevels = {
   'DEBUG': 'DEBUG',
@@ -11,7 +12,7 @@ const LogLevels = {
   'NONE':  'NONE',
 };
 
-const Colors = {
+let Colors = {
   'Black':   0,
   'Red':     1,
   'Green':   2,
@@ -19,9 +20,25 @@ const Colors = {
   'Blue':    4,
   'Magenta': 5,
   'Cyan':    6,
-  'White':   7,
+  'Grey':    7,
+  'White':   9,
   'Default': 9,
 };
+
+if(!isNodejs) {
+  Colors = {
+    'Black':   'Black',
+    'Red':     'IndianRed',
+    'Green':   'LimeGreen',
+    'Yellow':  'Orange',
+    'Blue':    'RoyalBlue',
+    'Magenta': 'Orchid',
+    'Cyan':    'SkyBlue',
+    'Grey':    'DimGrey',
+    'White':   'White',
+    'Default': 'Black',
+  };
+}
 
 const defaultOptions = {
   useColors: true,
@@ -30,10 +47,9 @@ const defaultOptions = {
   showLevel: true,
   filename: null,
   appendFile: true,
-  output: process.stdout
 };
 
-const loglevelColors = [Colors.Cyan, Colors.Green, Colors.Yellow, Colors.Red, Colors.Black];
+const loglevelColors = [Colors.Cyan, Colors.Green, Colors.Yellow, Colors.Red, Colors.Default];
 let GlobalLogLevel   = LogLevels.DEBUG;
 
 class Logger {
@@ -49,8 +65,6 @@ class Logger {
       const flags = this.options.appendFile ? 'a' : 'w'
       this.fileWriter = fs.createWriteStream(this.options.filename, { flags: flags });
     }
-
-    this.out = this.options.output;
   }
 
   debug(text) {
@@ -78,10 +92,21 @@ class Logger {
     let formattedText = this._createLogMessage(level, text, format.timestamp, format.level, format.category, format.text);
 
     if(this.fileWriter)
-      this.fileWriter.write(unformattedText);
+      this.fileWriter.write(unformattedText + '\n');
 
-    if(this.out)
-      this.out.write(formattedText)
+    if(isNodejs) {
+      console.log(formattedText)
+    } else {
+      if(this.options.showTimestamp && this.options.showLevel) {
+        console.log(formattedText, format.timestamp, format.level, format.category, format.text)
+      } else if(this.options.showTimestamp && !this.options.showLevel) {
+        console.log(formattedText, format.timestamp, format.category, format.text)
+      } else if(!this.options.showTimestamp && this.options.showLevel) {
+        console.log(formattedText, format.level, format.category, format.text)
+      } else {
+        console.log(formattedText, format.category, format.text)
+      }
+    }
   }
 
   _format(level, text) {
@@ -91,13 +116,26 @@ class Logger {
     let textFormat      = ': ';
 
     if(this.options.useColors) {
-      const levelColor    = Object.keys(LogLevels).map((f) => LogLevels[f]).indexOf(level);
-      const categoryColor = this.options.color;
+      if(isNodejs) {
+        const levelColor    = Object.keys(LogLevels).map((f) => LogLevels[f]).indexOf(level);
+        const categoryColor = this.options.color;
 
-      timestampFormat = '\u001b[3' + loglevelColors[levelColor] + 'm';
-      levelFormat     = '\u001b[3' + loglevelColors[levelColor] + ';22m';
-      categoryFormat  = '\u001b[3' + categoryColor + ';1m';
-      textFormat      = '\u001b[0m: ';
+        if(this.options.showTimestamp)
+          timestampFormat = '\u001b[3' + Colors.Grey + 'm';
+          // timestampFormat = '\u001b[3' + loglevelColors[levelColor] + 'm';
+
+        levelFormat     = '\u001b[3' + loglevelColors[levelColor] + ';22m';
+        categoryFormat  = '\u001b[3' + categoryColor + ';1m';
+        textFormat      = '\u001b[0m: ';
+      } else {
+        const levelColor    = Object.keys(LogLevels).map((f) => LogLevels[f]).indexOf(level);
+        const categoryColor = this.options.color;
+
+        if(this.options.showTimestamp)
+          timestampFormat = 'color:' + Colors.Grey;
+        levelFormat     = 'color:' + loglevelColors[levelColor];
+        categoryFormat  = 'color:' + categoryColor + '; font-weight: bold';
+      }
     }
 
     return {
@@ -114,10 +152,18 @@ class Logger {
     categoryFormat  = categoryFormat  || '';
     textFormat      = textFormat      || ': ';
 
+    if(!isNodejs) {
+      if(this.options.showTimestamp)
+        timestampFormat = '%c';
+      levelFormat     = '%c';
+      categoryFormat  = '%c';
+      textFormat      = ': %c';
+    }
+
     let final = '';
 
     if(this.options.showTimestamp)
-      final += '[' + new Date().toISOString() + '] ';
+      final += '' + new Date().toISOString() + ' ';
 
     final =  timestampFormat + final;
 
@@ -126,7 +172,7 @@ class Logger {
 
     final += categoryFormat + this.category;
     final += textFormat + text;
-    final = final + '\n';
+    final = final + '';
     return final;
   }
 

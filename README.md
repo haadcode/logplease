@@ -14,17 +14,29 @@ Simple Javascript logger for Node.js and Browsers
 npm install logplease
 ```
 
-## Usage
-You can run `npm test` for an example output, see https://github.com/haadcode/logplease/test/test.js
+### Examples
+#### Node.js
+```
+npm run example
+```
 
-### Example
+#### Browser
+*NOTE: Requires webpack to be installed globally! `npm install webpack -g`*
+
+```
+npm run example:browser
+```
+
+And open `example/index.html` in your browser.
+
+## Usage
 ```javascript
 const Logger = require('logplease');
 
 // Create loggers, see 'options' below for details
 const logger1  = Logger.create('daemon',  { filename: 'debug.log', useColors: false, appendFile: true });
 const logger2  = Logger.create('utils',   { color: Logger.Colors.Yellow });
-const logger3  = Logger.create('logger3', { color: Logger.Colors.Magenta, showTimestamp: false, showLevel: false, output: process.stderr });
+const logger3  = Logger.create('logger3', { color: Logger.Colors.Magenta, showTimestamp: false, showLevel: false });
 
 // Set global log level
 Logger.setLogLevel(Logger.LogLevel.INFO)
@@ -74,7 +86,7 @@ const logger = Logger.create("logger name", { color: Logger.Colors.Yellow });
 
 Colors:
 ```
-Black, Red, Green, Yellow, Blue, Magenta, Cyan, White
+Black, Red, Green, Yellow, Blue, Magenta, Cyan, Grey, White
 ```
 
 ### Options
@@ -87,13 +99,22 @@ const logger = Logger.create("logger name", options);
 
 Available options and defaults:
 ```javascript
-const defaultOptions = {
-  useColors: true,
-  color: Colors.White,
-  showTimestamp: true,
-  showLevel: true,
-  filename: null,
-  appendFile: true,
-  output: process.stdout
+const options = {
+  useColors: true,     // Enable colors
+  color: Colors.White, // Set the color of the logger
+  showTimestamp: true, // Display timestamp in the log message
+  showLevel: true,     // Display log level in the log message
+  filename: null,      // Set file path to log to a file
+  appendFile: true,    // Append logfile instead of overwriting
 };
 ```
+
+### Build
+*NOTE: Requires webpack to be installed globally! `npm install webpack -g`*
+
+The build command will build the browser distributable. Note that for Node.js it is not needed to run the build command.
+```
+npm run dist
+```
+
+The distributable file will be located in `dist/index.js`

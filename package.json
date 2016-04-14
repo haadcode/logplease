@@ -4,7 +4,9 @@
   "description": "Simple Javascript logger for Node.js and Browsers",
   "main": "src/index.js",
   "scripts": {
-    "test": "node test/test.js"
+    "example": "node example/example.js",
+    "example:browser": "webpack --config webpack.example.config.js",
+    "dist": "webpack --config webpack.config.js"
   },
   "repository": {
     "type": "git",
