@@ -47,45 +47,45 @@
 	'use strict';
 
 	/* Usage */
-	const Logger = __webpack_require__(1);
 
-	const logger1  = Logger.create('daemon',  { filename: 'debug.log', useColors: false, appendFile: true });
-	const logger2  = Logger.create('utils');
-	const logger3  = Logger.create('logger3', { color: Logger.Colors.Magenta, showTimestamp: false, showLevel: false });
+	var Logger = __webpack_require__(1);
 
-	const red     = Logger.create('red', { color: Logger.Colors.Red, showTimestamp: false, showLevel: false });
-	const green   = Logger.create('green', { color: Logger.Colors.Green, showTimestamp: false, showLevel: false });
-	const yellow  = Logger.create('yellow', { color: Logger.Colors.Yellow, showTimestamp: false, showLevel: false });
-	const blue    = Logger.create('blue', { color: Logger.Colors.Blue, showTimestamp: false, showLevel: false });
-	const magenta = Logger.create('magenta', { color: Logger.Colors.Magenta, showTimestamp: false, showLevel: false });
-	const cyan    = Logger.create('cyan', { color: Logger.Colors.Cyan, showTimestamp: false, showLevel: false });
+	var logger1 = Logger.create('daemon', { filename: 'debug.log', useColors: false, appendFile: true });
+	var logger2 = Logger.create('utils');
+	var logger3 = Logger.create('logger3', { color: Logger.Colors.Magenta, showTimestamp: false, showLevel: false });
 
-	Logger.setLogLevel(Logger.LogLevel.DEBUG)
+	var red = Logger.create('red', { color: Logger.Colors.Red, showTimestamp: false, showLevel: false });
+	var green = Logger.create('green', { color: Logger.Colors.Green, showTimestamp: false, showLevel: false });
+	var yellow = Logger.create('yellow', { color: Logger.Colors.Yellow, showTimestamp: false, showLevel: false });
+	var blue = Logger.create('blue', { color: Logger.Colors.Blue, showTimestamp: false, showLevel: false });
+	var magenta = Logger.create('magenta', { color: Logger.Colors.Magenta, showTimestamp: false, showLevel: false });
+	var cyan = Logger.create('cyan', { color: Logger.Colors.Cyan, showTimestamp: false, showLevel: false });
+
+	Logger.setLogLevel(Logger.LogLevel.DEBUG);
 
 	// CAVEAT: log functions can't take any parameters, if you need params, use interpolated strings
-	const number = 5;
-	logger1.debug(`This is a log message #${number}`);
-	logger1.info(`This is a log message #${number}`);
-	logger1.warn(`This is a log message #${number}`);
-	logger1.error(`This is a log message #${number}`);
+	var number = 5;
+	logger1.debug('This is a log message #' + number);
+	logger1.info('This is a log message #' + number);
+	logger1.warn('This is a log message #' + number);
+	logger1.error('This is a log message #' + number);
 
-	logger2.debug(`This is a log message #${number}`);
-	logger2.info(`This is a log message #${number}`);
-	logger2.warn(`This is a log message #${number}`);
-	logger2.error(`This is a log message #${number}`);
+	logger2.debug('This is a log message #' + number);
+	logger2.info('This is a log message #' + number);
+	logger2.warn('This is a log message #' + number);
+	logger2.error('This is a log message #' + number);
 
-	logger3.debug(`This is a log message #${number}`);
-	logger3.info(`This is a log message #${number}`);
-	logger3.warn(`This is a log message #${number}`);
-	logger3.error(`This is a log message #${number}`);
+	logger3.debug('This is a log message #' + number);
+	logger3.info('This is a log message #' + number);
+	logger3.warn('This is a log message #' + number);
+	logger3.error('This is a log message #' + number);
 
-	red.debug(`Red log message`);
-	green.debug(`Green log message`);
-	yellow.debug(`Yellow log message`);
-	blue.debug(`Blue log message`);
-	magenta.debug(`Magenta log message`);
-	cyan.debug(`Cyan log message`);
-
+	red.debug('Red log message');
+	green.debug('Green log message');
+	yellow.debug('Yellow log message');
+	blue.debug('Blue log message');
+	magenta.debug('Magenta log message');
+	cyan.debug('Cyan log message');
 
 /***/ },
 /* 1 */
@@ -93,226 +93,253 @@
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
-	const fs = __webpack_require__(4);
+	var _keys = __webpack_require__(4);
 
-	const isNodejs = process.version ? true : false;
+	var _keys2 = _interopRequireDefault(_keys);
 
-	const LogLevels = {
+	var _assign = __webpack_require__(16);
+
+	var _assign2 = _interopRequireDefault(_assign);
+
+	var _classCallCheck2 = __webpack_require__(23);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(24);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var fs = __webpack_require__(27);
+
+	var isNodejs = process.version ? true : false;
+
+	var LogLevels = {
 	  'DEBUG': 'DEBUG',
-	  'INFO':  'INFO',
-	  'WARN':  'WARN',
+	  'INFO': 'INFO',
+	  'WARN': 'WARN',
 	  'ERROR': 'ERROR',
-	  'NONE':  'NONE',
+	  'NONE': 'NONE'
 	};
 
 	// Default log level
-	let GlobalLogLevel = LogLevels.DEBUG;
+	var GlobalLogLevel = LogLevels.DEBUG;
 
 	// ANSI colors
-	let Colors = {
-	  'Black':   0,
-	  'Red':     1,
-	  'Green':   2,
-	  'Yellow':  3,
-	  'Blue':    4,
+	var Colors = {
+	  'Black': 0,
+	  'Red': 1,
+	  'Green': 2,
+	  'Yellow': 3,
+	  'Blue': 4,
 	  'Magenta': 5,
-	  'Cyan':    6,
-	  'Grey':    7,
-	  'White':   9,
-	  'Default': 9,
+	  'Cyan': 6,
+	  'Grey': 7,
+	  'White': 9,
+	  'Default': 9
 	};
 
 	// CSS colors
-	if(!isNodejs) {
+	if (!isNodejs) {
 	  Colors = {
-	    'Black':   'Black',
-	    'Red':     'IndianRed',
-	    'Green':   'LimeGreen',
-	    'Yellow':  'Orange',
-	    'Blue':    'RoyalBlue',
+	    'Black': 'Black',
+	    'Red': 'IndianRed',
+	    'Green': 'LimeGreen',
+	    'Yellow': 'Orange',
+	    'Blue': 'RoyalBlue',
 	    'Magenta': 'Orchid',
-	    'Cyan':    'SkyBlue',
-	    'Grey':    'DimGrey',
-	    'White':   'White',
-	    'Default': 'Black',
+	    'Cyan': 'SkyBlue',
+	    'Grey': 'DimGrey',
+	    'White': 'White',
+	    'Default': 'Black'
 	  };
 	}
 
-	const loglevelColors = [Colors.Cyan, Colors.Green, Colors.Yellow, Colors.Red, Colors.Default];
+	var loglevelColors = [Colors.Cyan, Colors.Green, Colors.Yellow, Colors.Red, Colors.Default];
 
-	const defaultOptions = {
+	var defaultOptions = {
 	  useColors: true,
 	  color: Colors.Default,
 	  showTimestamp: true,
 	  showLevel: true,
 	  filename: null,
-	  appendFile: true,
+	  appendFile: true
 	};
 
-	class Logger {
-	  constructor(category, options) {
+	var Logger = function () {
+	  function Logger(category, options) {
+	    (0, _classCallCheck3.default)(this, Logger);
+
 	    this.category = category;
 
-	    let opts = {};
-	    Object.assign(opts, defaultOptions);
-	    Object.assign(opts, options);
+	    var opts = {};
+	    (0, _assign2.default)(opts, defaultOptions);
+	    (0, _assign2.default)(opts, options);
 	    this.options = opts;
 
-	    if(this.options.filename) {
-	      const flags = this.options.appendFile ? 'a' : 'w'
+	    if (this.options.filename) {
+	      var flags = this.options.appendFile ? 'a' : 'w';
 	      this.fileWriter = fs.createWriteStream(this.options.filename, { flags: flags });
 	    }
 	  }
 
-	  debug(text) {
-	    this._write(LogLevels.DEBUG, text);
-	  }
+	  (0, _createClass3.default)(Logger, [{
+	    key: 'debug',
+	    value: function debug(text) {
+	      this._write(LogLevels.DEBUG, text);
+	    }
+	  }, {
+	    key: 'log',
+	    value: function log(text) {
+	      this.debug(text);
+	    }
+	  }, {
+	    key: 'info',
+	    value: function info(text) {
+	      this._write(LogLevels.INFO, text);
+	    }
+	  }, {
+	    key: 'warn',
+	    value: function warn(text) {
+	      this._write(LogLevels.WARN, text);
+	    }
+	  }, {
+	    key: 'error',
+	    value: function error(text) {
+	      this._write(LogLevels.ERROR, text);
+	    }
+	  }, {
+	    key: '_write',
+	    value: function _write(level, text) {
+	      if (!this._shouldLog(level)) return;
 
-	  log(text) {
-	    this.debug(text);
-	  }
+	      var format = this._format(level, text);
+	      var unformattedText = this._createLogMessage(level, text);
+	      var formattedText = this._createLogMessage(level, text, format.timestamp, format.level, format.category, format.text);
 
-	  info(text) {
-	    this._write(LogLevels.INFO, text);
-	  }
+	      if (this.fileWriter) this.fileWriter.write(unformattedText + '\n');
 
-	  warn(text) {
-	    this._write(LogLevels.WARN, text);
-	  }
-
-	  error(text) {
-	    this._write(LogLevels.ERROR, text);
-	  }
-
-	  _write(level, text) {
-	    if(!this._shouldLog(level))
-	      return;
-
-	    let format = this._format(level, text);
-	    let unformattedText = this._createLogMessage(level, text);
-	    let formattedText = this._createLogMessage(level, text, format.timestamp, format.level, format.category, format.text);
-
-	    if(this.fileWriter)
-	      this.fileWriter.write(unformattedText + '\n');
-
-	    if(isNodejs) {
-	      console.log(formattedText)
-	    } else {
-	      // TODO: clean this up
-	      if(level === LogLevels.ERROR) {
-	        if(this.options.showTimestamp && this.options.showLevel) {
-	          console.error(formattedText, format.timestamp, format.level, format.category, format.text)
-	        } else if(this.options.showTimestamp && !this.options.showLevel) {
-	          console.error(formattedText, format.timestamp, format.category, format.text)
-	        } else if(!this.options.showTimestamp && this.options.showLevel) {
-	          console.error(formattedText, format.level, format.category, format.text)
-	        } else {
-	          console.error(formattedText, format.category, format.text)
-	        }
+	      if (isNodejs) {
+	        console.log(formattedText);
 	      } else {
-	        if(this.options.showTimestamp && this.options.showLevel) {
-	          console.log(formattedText, format.timestamp, format.level, format.category, format.text)
-	        } else if(this.options.showTimestamp && !this.options.showLevel) {
-	          console.log(formattedText, format.timestamp, format.category, format.text)
-	        } else if(!this.options.showTimestamp && this.options.showLevel) {
-	          console.log(formattedText, format.level, format.category, format.text)
+	        // TODO: clean this up
+	        if (level === LogLevels.ERROR) {
+	          if (this.options.showTimestamp && this.options.showLevel) {
+	            console.error(formattedText, format.timestamp, format.level, format.category, format.text);
+	          } else if (this.options.showTimestamp && !this.options.showLevel) {
+	            console.error(formattedText, format.timestamp, format.category, format.text);
+	          } else if (!this.options.showTimestamp && this.options.showLevel) {
+	            console.error(formattedText, format.level, format.category, format.text);
+	          } else {
+	            console.error(formattedText, format.category, format.text);
+	          }
 	        } else {
-	          console.log(formattedText, format.category, format.text)
+	          if (this.options.showTimestamp && this.options.showLevel) {
+	            console.log(formattedText, format.timestamp, format.level, format.category, format.text);
+	          } else if (this.options.showTimestamp && !this.options.showLevel) {
+	            console.log(formattedText, format.timestamp, format.category, format.text);
+	          } else if (!this.options.showTimestamp && this.options.showLevel) {
+	            console.log(formattedText, format.level, format.category, format.text);
+	          } else {
+	            console.log(formattedText, format.category, format.text);
+	          }
 	        }
 	      }
 	    }
-	  }
+	  }, {
+	    key: '_format',
+	    value: function _format(level, text) {
+	      var timestampFormat = '';
+	      var levelFormat = '';
+	      var categoryFormat = '';
+	      var textFormat = ': ';
 
-	  _format(level, text) {
-	    let timestampFormat = '';
-	    let levelFormat     = '';
-	    let categoryFormat  = '';
-	    let textFormat      = ': ';
+	      if (this.options.useColors) {
+	        var levelColor = (0, _keys2.default)(LogLevels).map(function (f) {
+	          return LogLevels[f];
+	        }).indexOf(level);
+	        var categoryColor = this.options.color;
 
-	    if(this.options.useColors) {
-	        const levelColor    = Object.keys(LogLevels).map((f) => LogLevels[f]).indexOf(level);
-	        const categoryColor = this.options.color;
+	        if (isNodejs) {
+	          if (this.options.showTimestamp) timestampFormat = '\u001b[3' + Colors.Grey + 'm';
 
-	      if(isNodejs) {
-	        if(this.options.showTimestamp)
-	          timestampFormat = '\u001b[3' + Colors.Grey + 'm';
+	          if (this.options.showLevel) levelFormat = '\u001b[3' + loglevelColors[levelColor] + ';22m';
 
-	        if(this.options.showLevel)
-	          levelFormat = '\u001b[3' + loglevelColors[levelColor] + ';22m';
+	          categoryFormat = '\u001b[3' + categoryColor + ';1m';
+	          textFormat = '\u001b[0m: ';
+	        } else {
+	          if (this.options.showTimestamp) timestampFormat = 'color:' + Colors.Grey;
 
-	        categoryFormat = '\u001b[3' + categoryColor + ';1m';
-	        textFormat = '\u001b[0m: ';
-	      } else {
-	        if(this.options.showTimestamp)
-	          timestampFormat = 'color:' + Colors.Grey;
+	          if (this.options.showLevel) levelFormat = 'color:' + loglevelColors[levelColor];
 
-	        if(this.options.showLevel)
-	          levelFormat = 'color:' + loglevelColors[levelColor];
-
-	        categoryFormat = 'color:' + categoryColor + '; font-weight: bold';
-
-	          // textFormat = 'background:' + Colors.Red;
+	          categoryFormat = 'color:' + categoryColor + '; font-weight: bold';
+	        }
 	      }
+
+	      return {
+	        timestamp: timestampFormat,
+	        level: levelFormat,
+	        category: categoryFormat,
+	        text: textFormat
+	      };
 	    }
+	  }, {
+	    key: '_createLogMessage',
+	    value: function _createLogMessage(level, text, timestampFormat, levelFormat, categoryFormat, textFormat) {
+	      timestampFormat = timestampFormat || '';
+	      levelFormat = levelFormat || '';
+	      categoryFormat = categoryFormat || '';
+	      textFormat = textFormat || ': ';
 
-	    return {
-	      timestamp: timestampFormat,
-	      level: levelFormat,
-	      category: categoryFormat,
-	      text: textFormat
-	    };
-	  }
+	      if (!isNodejs) {
+	        if (this.options.showTimestamp) timestampFormat = '%c';
 
-	  _createLogMessage(level, text, timestampFormat, levelFormat, categoryFormat, textFormat) {
-	    timestampFormat = timestampFormat || '';
-	    levelFormat     = levelFormat     || '';
-	    categoryFormat  = categoryFormat  || '';
-	    textFormat      = textFormat      || ': ';
+	        if (this.options.showLevel) levelFormat = '%c';
 
-	    if(!isNodejs) {
-	      if(this.options.showTimestamp)
-	        timestampFormat = '%c';
+	        categoryFormat = '%c';
+	        textFormat = ': %c';
+	      }
 
-	      if(this.options.showLevel)
-	        levelFormat = '%c';
+	      var result = '';
 
-	      categoryFormat  = '%c';
-	      textFormat = ': %c';
+	      if (this.options.showTimestamp) result += '' + new Date().toISOString() + ' ';
+
+	      result = timestampFormat + result;
+
+	      if (this.options.showLevel) result += levelFormat + '[' + level + ']' + (level === LogLevels.INFO || level === LogLevels.WARN ? ' ' : '') + ' ';
+
+	      result += categoryFormat + this.category;
+	      result += textFormat + text;
+	      return result;
 	    }
+	  }, {
+	    key: '_shouldLog',
+	    value: function _shouldLog(level) {
+	      var levels = (0, _keys2.default)(LogLevels).map(function (f) {
+	        return LogLevels[f];
+	      });
+	      var index = levels.indexOf(level);
+	      var levelIdx = levels.indexOf(GlobalLogLevel);
+	      return index >= levelIdx;
+	    }
+	  }]);
+	  return Logger;
+	}();
 
-	    let result = '';
-
-	    if(this.options.showTimestamp)
-	      result += '' + new Date().toISOString() + ' ';
-
-	    result = timestampFormat + result;
-
-	    if(this.options.showLevel)
-	      result += levelFormat + '[' + level +']' + (level === LogLevels.INFO || level === LogLevels.WARN ? ' ' : '') + ' ';
-
-	    result += categoryFormat + this.category;
-	    result += textFormat + text;
-	    return result;
-	  }
-
-	  _shouldLog(level) {
-	    const levels   = Object.keys(LogLevels).map((f) => LogLevels[f]);
-	    const index    = levels.indexOf(level);
-	    const levelIdx = levels.indexOf(GlobalLogLevel);
-	    return index >= levelIdx;
-	  }
-	};
+	;
 
 	/* Public API */
 	module.exports = {
 	  Colors: Colors,
 	  LogLevel: LogLevels,
-	  setLogLevel: (level) => {
-	    GlobalLogLevel = level
+	  setLogLevel: function setLogLevel(level) {
+	    GlobalLogLevel = level;
 	  },
-	  create: (category, options) => new Logger(category, options),
+	  create: function create(category, options) {
+	    return new Logger(category, options);
+	  }
 	};
-
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
@@ -584,17 +611,351 @@
 
 /***/ },
 /* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(5), __esModule: true };
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(6);
+	module.exports = __webpack_require__(12).Object.keys;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.2.14 Object.keys(O)
+	var toObject = __webpack_require__(7);
+
+	__webpack_require__(9)('keys', function($keys){
+	  return function keys(it){
+	    return $keys(toObject(it));
+	  };
+	});
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 7.1.13 ToObject(argument)
+	var defined = __webpack_require__(8);
+	module.exports = function(it){
+	  return Object(defined(it));
+	};
+
+/***/ },
+/* 8 */
 /***/ function(module, exports) {
 
+	// 7.2.1 RequireObjectCoercible(argument)
+	module.exports = function(it){
+	  if(it == undefined)throw TypeError("Can't call method on  " + it);
+	  return it;
+	};
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// most Object methods by ES6 should accept primitives
+	var $export = __webpack_require__(10)
+	  , core    = __webpack_require__(12)
+	  , fails   = __webpack_require__(15);
+	module.exports = function(KEY, exec){
+	  var fn  = (core.Object || {})[KEY] || Object[KEY]
+	    , exp = {};
+	  exp[KEY] = exec(fn);
+	  $export($export.S + $export.F * fails(function(){ fn(1); }), 'Object', exp);
+	};
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var global    = __webpack_require__(11)
+	  , core      = __webpack_require__(12)
+	  , ctx       = __webpack_require__(13)
+	  , PROTOTYPE = 'prototype';
+
+	var $export = function(type, name, source){
+	  var IS_FORCED = type & $export.F
+	    , IS_GLOBAL = type & $export.G
+	    , IS_STATIC = type & $export.S
+	    , IS_PROTO  = type & $export.P
+	    , IS_BIND   = type & $export.B
+	    , IS_WRAP   = type & $export.W
+	    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
+	    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE]
+	    , key, own, out;
+	  if(IS_GLOBAL)source = name;
+	  for(key in source){
+	    // contains in native
+	    own = !IS_FORCED && target && key in target;
+	    if(own && key in exports)continue;
+	    // export native or passed
+	    out = own ? target[key] : source[key];
+	    // prevent global pollution for namespaces
+	    exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
+	    // bind timers to global for call from export context
+	    : IS_BIND && own ? ctx(out, global)
+	    // wrap global constructors for prevent change them in library
+	    : IS_WRAP && target[key] == out ? (function(C){
+	      var F = function(param){
+	        return this instanceof C ? new C(param) : C(param);
+	      };
+	      F[PROTOTYPE] = C[PROTOTYPE];
+	      return F;
+	    // make static versions for prototype methods
+	    })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
+	    if(IS_PROTO)(exports[PROTOTYPE] || (exports[PROTOTYPE] = {}))[key] = out;
+	  }
+	};
+	// type bitmap
+	$export.F = 1;  // forced
+	$export.G = 2;  // global
+	$export.S = 4;  // static
+	$export.P = 8;  // proto
+	$export.B = 16; // bind
+	$export.W = 32; // wrap
+	module.exports = $export;
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+	var global = module.exports = typeof window != 'undefined' && window.Math == Math
+	  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
+	if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	var core = module.exports = {version: '1.2.6'};
+	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// optional / simple context binding
+	var aFunction = __webpack_require__(14);
+	module.exports = function(fn, that, length){
+	  aFunction(fn);
+	  if(that === undefined)return fn;
+	  switch(length){
+	    case 1: return function(a){
+	      return fn.call(that, a);
+	    };
+	    case 2: return function(a, b){
+	      return fn.call(that, a, b);
+	    };
+	    case 3: return function(a, b, c){
+	      return fn.call(that, a, b, c);
+	    };
+	  }
+	  return function(/* ...args */){
+	    return fn.apply(that, arguments);
+	  };
+	};
+
+/***/ },
+/* 14 */
+/***/ function(module, exports) {
+
+	module.exports = function(it){
+	  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
+	  return it;
+	};
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	module.exports = function(exec){
+	  try {
+	    return !!exec();
+	  } catch(e){
+	    return true;
+	  }
+	};
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(17), __esModule: true };
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(18);
+	module.exports = __webpack_require__(12).Object.assign;
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.3.1 Object.assign(target, source)
+	var $export = __webpack_require__(10);
+
+	$export($export.S + $export.F, 'Object', {assign: __webpack_require__(19)});
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// 19.1.2.1 Object.assign(target, source, ...)
+	var $        = __webpack_require__(20)
+	  , toObject = __webpack_require__(7)
+	  , IObject  = __webpack_require__(21);
+
+	// should work with symbols and should have deterministic property order (V8 bug)
+	module.exports = __webpack_require__(15)(function(){
+	  var a = Object.assign
+	    , A = {}
+	    , B = {}
+	    , S = Symbol()
+	    , K = 'abcdefghijklmnopqrst';
+	  A[S] = 7;
+	  K.split('').forEach(function(k){ B[k] = k; });
+	  return a({}, A)[S] != 7 || Object.keys(a({}, B)).join('') != K;
+	}) ? function assign(target, source){ // eslint-disable-line no-unused-vars
+	  var T     = toObject(target)
+	    , $$    = arguments
+	    , $$len = $$.length
+	    , index = 1
+	    , getKeys    = $.getKeys
+	    , getSymbols = $.getSymbols
+	    , isEnum     = $.isEnum;
+	  while($$len > index){
+	    var S      = IObject($$[index++])
+	      , keys   = getSymbols ? getKeys(S).concat(getSymbols(S)) : getKeys(S)
+	      , length = keys.length
+	      , j      = 0
+	      , key;
+	    while(length > j)if(isEnum.call(S, key = keys[j++]))T[key] = S[key];
+	  }
+	  return T;
+	} : Object.assign;
+
+/***/ },
+/* 20 */
+/***/ function(module, exports) {
+
+	var $Object = Object;
 	module.exports = {
-	  createWriteStream: function(filename, options) {
+	  create:     $Object.create,
+	  getProto:   $Object.getPrototypeOf,
+	  isEnum:     {}.propertyIsEnumerable,
+	  getDesc:    $Object.getOwnPropertyDescriptor,
+	  setDesc:    $Object.defineProperty,
+	  setDescs:   $Object.defineProperties,
+	  getKeys:    $Object.keys,
+	  getNames:   $Object.getOwnPropertyNames,
+	  getSymbols: $Object.getOwnPropertySymbols,
+	  each:       [].forEach
+	};
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// fallback for non-array-like ES3 and non-enumerable old V8 strings
+	var cof = __webpack_require__(22);
+	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
+	  return cof(it) == 'String' ? it.split('') : Object(it);
+	};
+
+/***/ },
+/* 22 */
+/***/ function(module, exports) {
+
+	var toString = {}.toString;
+
+	module.exports = function(it){
+	  return toString.call(it).slice(8, -1);
+	};
+
+/***/ },
+/* 23 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	exports.default = function (instance, Constructor) {
+	  if (!(instance instanceof Constructor)) {
+	    throw new TypeError("Cannot call a class as a function");
+	  }
+	};
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	exports.__esModule = true;
+
+	var _defineProperty = __webpack_require__(25);
+
+	var _defineProperty2 = _interopRequireDefault(_defineProperty);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function () {
+	  function defineProperties(target, props) {
+	    for (var i = 0; i < props.length; i++) {
+	      var descriptor = props[i];
+	      descriptor.enumerable = descriptor.enumerable || false;
+	      descriptor.configurable = true;
+	      if ("value" in descriptor) descriptor.writable = true;
+	      (0, _defineProperty2.default)(target, descriptor.key, descriptor);
+	    }
+	  }
+
+	  return function (Constructor, protoProps, staticProps) {
+	    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+	    if (staticProps) defineProperties(Constructor, staticProps);
+	    return Constructor;
+	  };
+	}();
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(26), __esModule: true };
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var $ = __webpack_require__(20);
+	module.exports = function defineProperty(it, key, desc){
+	  return $.setDesc(it, key, desc);
+	};
+
+/***/ },
+/* 27 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = {
+	  createWriteStream: function createWriteStream(filename, options) {
 	    return;
 	  },
-	  writeFileSync: function() {
+	  writeFileSync: function writeFileSync() {
 	    return;
 	  }
-	}
-
+	};
 
 /***/ }
 /******/ ]);
