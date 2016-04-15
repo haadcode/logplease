@@ -1,4 +1,5 @@
 'use strict';
+
 /* Usage */
 const Logger = require('../src/index');
 
