@@ -45,6 +45,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+
 	/* Usage */
 	const Logger = __webpack_require__(1);
 
@@ -167,6 +168,10 @@
 	    this._write(LogLevels.DEBUG, text);
 	  }
 
+	  log(text) {
+	    this.debug(text);
+	  }
+
 	  info(text) {
 	    this._write(LogLevels.INFO, text);
 	  }
@@ -193,14 +198,27 @@
 	    if(isNodejs) {
 	      console.log(formattedText)
 	    } else {
-	      if(this.options.showTimestamp && this.options.showLevel) {
-	        console.log(formattedText, format.timestamp, format.level, format.category, format.text)
-	      } else if(this.options.showTimestamp && !this.options.showLevel) {
-	        console.log(formattedText, format.timestamp, format.category, format.text)
-	      } else if(!this.options.showTimestamp && this.options.showLevel) {
-	        console.log(formattedText, format.level, format.category, format.text)
+	      // TODO: clean this up
+	      if(level === LogLevels.ERROR) {
+	        if(this.options.showTimestamp && this.options.showLevel) {
+	          console.error(formattedText, format.timestamp, format.level, format.category, format.text)
+	        } else if(this.options.showTimestamp && !this.options.showLevel) {
+	          console.error(formattedText, format.timestamp, format.category, format.text)
+	        } else if(!this.options.showTimestamp && this.options.showLevel) {
+	          console.error(formattedText, format.level, format.category, format.text)
+	        } else {
+	          console.error(formattedText, format.category, format.text)
+	        }
 	      } else {
-	        console.log(formattedText, format.category, format.text)
+	        if(this.options.showTimestamp && this.options.showLevel) {
+	          console.log(formattedText, format.timestamp, format.level, format.category, format.text)
+	        } else if(this.options.showTimestamp && !this.options.showLevel) {
+	          console.log(formattedText, format.timestamp, format.category, format.text)
+	        } else if(!this.options.showTimestamp && this.options.showLevel) {
+	          console.log(formattedText, format.level, format.category, format.text)
+	        } else {
+	          console.log(formattedText, format.category, format.text)
+	        }
 	      }
 	    }
 	  }
@@ -232,6 +250,8 @@
 	          levelFormat = 'color:' + loglevelColors[levelColor];
 
 	        categoryFormat = 'color:' + categoryColor + '; font-weight: bold';
+
+	          // textFormat = 'background:' + Colors.Red;
 	      }
 	    }
 
@@ -568,6 +588,9 @@
 
 	module.exports = {
 	  createWriteStream: function(filename, options) {
+	    return;
+	  },
+	  writeFileSync: function() {
 	    return;
 	  }
 	}
