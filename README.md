@@ -82,6 +82,8 @@ You can set a global log level to display only the wanted log messages.
 ```javascript
 const Logger = require('logplease');
 Logger.setLogLevel(Logger.LogLevel.ERROR) // Show only ERROR messages
+// or
+Logger.setLogLevel('ERROR')
 ```
 
 Log levels:
@@ -134,13 +136,13 @@ npm install
 
 The build command will build the browser distributable. Note that for Node.js it is not needed to run the build command.
 ```
-npm run dist
+npm run build:dist
 ```
 
 The distributable file will be located in `dist/logplease.min.js`
 
 Build the browser example:
 ```
-npm run example:browser
+npm run build_examples
 ```
 

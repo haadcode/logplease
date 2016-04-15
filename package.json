@@ -5,8 +5,9 @@
   "main": "src/index.js",
   "scripts": {
     "example": "node example/example.js",
-    "example:browser": "./node_modules/.bin/webpack --config webpack.example.config.js",
-    "dist": "./node_modules/.bin/webpack --config webpack.config.js"
+    "build": "npm run build:dist && npm run build:examples",
+    "build:dist": "./node_modules/.bin/webpack --config webpack.config.js",
+    "build:examples": "./node_modules/.bin/webpack --config webpack.example.config.js"
   },
   "repository": {
     "type": "git",

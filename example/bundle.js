@@ -104,6 +104,10 @@
 	  'NONE':  'NONE',
 	};
 
+	// Default log level
+	let GlobalLogLevel = LogLevels.DEBUG;
+
+	// ANSI colors
 	let Colors = {
 	  'Black':   0,
 	  'Red':     1,
@@ -117,6 +121,7 @@
 	  'Default': 9,
 	};
 
+	// CSS colors
 	if(!isNodejs) {
 	  Colors = {
 	    'Black':   'Black',
@@ -132,6 +137,8 @@
 	  };
 	}
 
+	const loglevelColors = [Colors.Cyan, Colors.Green, Colors.Yellow, Colors.Red, Colors.Default];
+
 	const defaultOptions = {
 	  useColors: true,
 	  color: Colors.Default,
@@ -140,9 +147,6 @@
 	  filename: null,
 	  appendFile: true,
 	};
-
-	const loglevelColors = [Colors.Cyan, Colors.Green, Colors.Yellow, Colors.Red, Colors.Default];
-	let GlobalLogLevel   = LogLevels.DEBUG;
 
 	class Logger {
 	  constructor(category, options) {
@@ -208,25 +212,26 @@
 	    let textFormat      = ': ';
 
 	    if(this.options.useColors) {
-	      if(isNodejs) {
 	        const levelColor    = Object.keys(LogLevels).map((f) => LogLevels[f]).indexOf(level);
 	        const categoryColor = this.options.color;
 
+	      if(isNodejs) {
 	        if(this.options.showTimestamp)
 	          timestampFormat = '\u001b[3' + Colors.Grey + 'm';
-	          // timestampFormat = '\u001b[3' + loglevelColors[levelColor] + 'm';
 
-	        levelFormat     = '\u001b[3' + loglevelColors[levelColor] + ';22m';
-	        categoryFormat  = '\u001b[3' + categoryColor + ';1m';
-	        textFormat      = '\u001b[0m: ';
+	        if(this.options.showLevel)
+	          levelFormat = '\u001b[3' + loglevelColors[levelColor] + ';22m';
+
+	        categoryFormat = '\u001b[3' + categoryColor + ';1m';
+	        textFormat = '\u001b[0m: ';
 	      } else {
-	        const levelColor    = Object.keys(LogLevels).map((f) => LogLevels[f]).indexOf(level);
-	        const categoryColor = this.options.color;
-
 	        if(this.options.showTimestamp)
 	          timestampFormat = 'color:' + Colors.Grey;
-	        levelFormat     = 'color:' + loglevelColors[levelColor];
-	        categoryFormat  = 'color:' + categoryColor + '; font-weight: bold';
+
+	        if(this.options.showLevel)
+	          levelFormat = 'color:' + loglevelColors[levelColor];
+
+	        categoryFormat = 'color:' + categoryColor + '; font-weight: bold';
 	      }
 	    }
 
@@ -247,25 +252,27 @@
 	    if(!isNodejs) {
 	      if(this.options.showTimestamp)
 	        timestampFormat = '%c';
-	      levelFormat     = '%c';
+
+	      if(this.options.showLevel)
+	        levelFormat = '%c';
+
 	      categoryFormat  = '%c';
-	      textFormat      = ': %c';
+	      textFormat = ': %c';
 	    }
 
-	    let final = '';
+	    let result = '';
 
 	    if(this.options.showTimestamp)
-	      final += '' + new Date().toISOString() + ' ';
+	      result += '' + new Date().toISOString() + ' ';
 
-	    final =  timestampFormat + final;
+	    result = timestampFormat + result;
 
 	    if(this.options.showLevel)
-	      final += levelFormat + '[' + level +']' + (level === LogLevels.INFO || level === LogLevels.WARN ? ' ' : '') + ' ';
+	      result += levelFormat + '[' + level +']' + (level === LogLevels.INFO || level === LogLevels.WARN ? ' ' : '') + ' ';
 
-	    final += categoryFormat + this.category;
-	    final += textFormat + text;
-	    final = final + '';
-	    return final;
+	    result += categoryFormat + this.category;
+	    result += textFormat + text;
+	    return result;
 	  }
 
 	  _shouldLog(level) {
@@ -277,15 +284,12 @@
 	};
 
 	/* Public API */
-	// exports.Colors = Colors;
-	// exports.LogLevel = LogLevels;
-	// exports.setLogLevel = (level) => GlobalLogLevel =  level;
-	// exports.create = (category, options) => new Logger(category, options);
-
 	module.exports = {
 	  Colors: Colors,
 	  LogLevel: LogLevels,
-	  setLogLevel: (level) => GlobalLogLevel = level,
+	  setLogLevel: (level) => {
+	    GlobalLogLevel = level
+	  },
 	  create: (category, options) => new Logger(category, options),
 	};
 
