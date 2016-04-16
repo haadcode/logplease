@@ -61,31 +61,31 @@
 	var magenta = Logger.create('magenta', { color: Logger.Colors.Magenta, showTimestamp: false, showLevel: false });
 	var cyan = Logger.create('cyan', { color: Logger.Colors.Cyan, showTimestamp: false, showLevel: false });
 
-	Logger.setLogLevel(Logger.LogLevel.DEBUG);
+	Logger.setLogLevel(Logger.LogLevels.DEBUG);
 
 	// CAVEAT: log functions can't take any parameters, if you need params, use interpolated strings
 	var number = 5;
-	logger1.debug('This is a log message #' + number);
-	logger1.info('This is a log message #' + number);
-	logger1.warn('This is a log message #' + number);
-	logger1.error('This is a log message #' + number);
+	logger1.debug('This is a debug message #' + number);
+	logger1.info('This is an info message #' + number);
+	logger1.warn('This is a warning message #' + number);
+	logger1.error('This is an error message #' + number);
 
-	logger2.debug('This is a log message #' + number);
-	logger2.info('This is a log message #' + number);
-	logger2.warn('This is a log message #' + number);
-	logger2.error('This is a log message #' + number);
+	logger2.debug('This is a debug message #' + number);
+	logger2.info('This is an info message #' + number);
+	logger2.warn('This is a warning message #' + number);
+	logger2.error('This is an error message #' + number);
 
-	logger3.debug('This is a log message #' + number);
-	logger3.info('This is a log message #' + number);
-	logger3.warn('This is a log message #' + number);
-	logger3.error('This is a log message #' + number);
+	logger3.debug('This is a debug message #' + number);
+	logger3.info('This is an info message #' + number);
+	logger3.warn('This is a warning message #' + number);
+	logger3.error('This is an error message #' + number);
 
-	red.debug('Red log message');
-	green.debug('Green log message');
-	yellow.debug('Yellow log message');
-	blue.debug('Blue log message');
-	magenta.debug('Magenta log message');
-	cyan.debug('Cyan log message');
+	red.log('Red log message'); // log() is an alias for debug()
+	green.log('Green log message');
+	yellow.log('Yellow log message');
+	blue.log('Blue log message');
+	magenta.log('Magenta log message');
+	cyan.log('Cyan log message');
 
 /***/ },
 /* 1 */
@@ -123,8 +123,11 @@
 	  'NONE': 'NONE'
 	};
 
-	// Default log level
+	// Global log level
 	var GlobalLogLevel = LogLevels.DEBUG;
+
+	// Global log file name
+	var GlobalLogfile = null;
 
 	// ANSI colors
 	var Colors = {
@@ -163,7 +166,7 @@
 	  color: Colors.Default,
 	  showTimestamp: true,
 	  showLevel: true,
-	  filename: null,
+	  filename: GlobalLogfile,
 	  appendFile: true
 	};
 
@@ -172,16 +175,10 @@
 	    (0, _classCallCheck3.default)(this, Logger);
 
 	    this.category = category;
-
 	    var opts = {};
 	    (0, _assign2.default)(opts, defaultOptions);
 	    (0, _assign2.default)(opts, options);
 	    this.options = opts;
-
-	    if (this.options.filename) {
-	      var flags = this.options.appendFile ? 'a' : 'w';
-	      this.fileWriter = fs.createWriteStream(this.options.filename, { flags: flags });
-	    }
 	  }
 
 	  (0, _createClass3.default)(Logger, [{
@@ -214,11 +211,13 @@
 	    value: function _write(level, text) {
 	      if (!this._shouldLog(level)) return;
 
+	      if ((this.options.filename || GlobalLogfile) && !this.fileWriter) this.fileWriter = fs.openSync(this.options.filename || GlobalLogfile, this.options.appendFile ? 'a+' : 'w+');
+
 	      var format = this._format(level, text);
 	      var unformattedText = this._createLogMessage(level, text);
 	      var formattedText = this._createLogMessage(level, text, format.timestamp, format.level, format.category, format.text);
 
-	      if (this.fileWriter) this.fileWriter.write(unformattedText + '\n');
+	      if (this.fileWriter) fs.writeSync(this.fileWriter, unformattedText + '\n', null, 'utf-8');
 
 	      if (isNodejs) {
 	        console.log(formattedText);
@@ -332,14 +331,20 @@
 	/* Public API */
 	module.exports = {
 	  Colors: Colors,
-	  LogLevel: LogLevels,
+	  LogLevels: LogLevels,
 	  setLogLevel: function setLogLevel(level) {
 	    GlobalLogLevel = level;
 	  },
+	  setLogfile: function setLogfile(filename) {
+	    GlobalLogfile = filename;
+	  },
 	  create: function create(category, options) {
-	    return new Logger(category, options);
-	  }
-	};
+	    var logger = new Logger(category, options);
+	    return logger;
+	  },
+	  forceBrowserMode: function forceBrowserMode(force) {
+	    return isNodejs = !force;
+	  } };
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
@@ -953,6 +958,12 @@
 	    return;
 	  },
 	  writeFileSync: function writeFileSync() {
+	    return;
+	  },
+	  openSync: function openSync() {
+	    return;
+	  },
+	  writeSync: function writeSync() {
 	    return;
 	  }
 	};

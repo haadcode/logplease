@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 
-const isNodejs = process.version ? true : false;
+let isNodejs = process.version ? true : false;
 
 const LogLevels = {
   'DEBUG': 'DEBUG',
@@ -12,8 +12,11 @@ const LogLevels = {
   'NONE':  'NONE',
 };
 
-// Default log level
+// Global log level
 let GlobalLogLevel = LogLevels.DEBUG;
+
+// Global log file name
+let GlobalLogfile = null;
 
 // ANSI colors
 let Colors = {
@@ -52,23 +55,17 @@ const defaultOptions = {
   color: Colors.Default,
   showTimestamp: true,
   showLevel: true,
-  filename: null,
+  filename: GlobalLogfile,
   appendFile: true,
 };
 
 class Logger {
   constructor(category, options) {
     this.category = category;
-
     let opts = {};
     Object.assign(opts, defaultOptions);
     Object.assign(opts, options);
     this.options = opts;
-
-    if(this.options.filename) {
-      const flags = this.options.appendFile ? 'a' : 'w'
-      this.fileWriter = fs.createWriteStream(this.options.filename, { flags: flags });
-    }
   }
 
   debug(text) {
@@ -95,12 +92,15 @@ class Logger {
     if(!this._shouldLog(level))
       return;
 
+    if((this.options.filename || GlobalLogfile) && !this.fileWriter)
+      this.fileWriter = fs.openSync(this.options.filename || GlobalLogfile, this.options.appendFile ? 'a+' : 'w+');
+
     let format = this._format(level, text);
     let unformattedText = this._createLogMessage(level, text);
     let formattedText = this._createLogMessage(level, text, format.timestamp, format.level, format.category, format.text);
 
     if(this.fileWriter)
-      this.fileWriter.write(unformattedText + '\n');
+      fs.writeSync(this.fileWriter, unformattedText + '\n', null, 'utf-8');
 
     if(isNodejs) {
       console.log(formattedText)
@@ -211,9 +211,16 @@ class Logger {
 /* Public API */
 module.exports = {
   Colors: Colors,
-  LogLevel: LogLevels,
+  LogLevels: LogLevels,
   setLogLevel: (level) => {
-    GlobalLogLevel = level
+    GlobalLogLevel = level;
   },
-  create: (category, options) => new Logger(category, options),
+  setLogfile: (filename) => {
+    GlobalLogfile = filename;
+  },
+  create: (category, options) => {
+    const logger = new Logger(category, options);
+    return logger;
+  },
+  forceBrowserMode: (force) => isNodejs = !force, // for testing
 };

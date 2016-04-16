@@ -4,5 +4,11 @@ module.exports = {
   },
   writeFileSync: function() {
     return;
+  },
+  openSync: function() {
+    return;
+  },
+  writeSync: function() {
+    return;
   }
 }

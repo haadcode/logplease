@@ -14,28 +14,28 @@ const blue    = Logger.create('blue', { color: Logger.Colors.Blue, showTimestamp
 const magenta = Logger.create('magenta', { color: Logger.Colors.Magenta, showTimestamp: false, showLevel: false });
 const cyan    = Logger.create('cyan', { color: Logger.Colors.Cyan, showTimestamp: false, showLevel: false });
 
-Logger.setLogLevel(Logger.LogLevel.DEBUG)
+Logger.setLogLevel(Logger.LogLevels.DEBUG)
 
 // CAVEAT: log functions can't take any parameters, if you need params, use interpolated strings
 const number = 5;
-logger1.debug(`This is a log message #${number}`);
-logger1.info(`This is a log message #${number}`);
-logger1.warn(`This is a log message #${number}`);
-logger1.error(`This is a log message #${number}`);
+logger1.debug(`This is a debug message #${number}`);
+logger1.info(`This is an info message #${number}`);
+logger1.warn(`This is a warning message #${number}`);
+logger1.error(`This is an error message #${number}`);
 
-logger2.debug(`This is a log message #${number}`);
-logger2.info(`This is a log message #${number}`);
-logger2.warn(`This is a log message #${number}`);
-logger2.error(`This is a log message #${number}`);
+logger2.debug(`This is a debug message #${number}`);
+logger2.info(`This is an info message #${number}`);
+logger2.warn(`This is a warning message #${number}`);
+logger2.error(`This is an error message #${number}`);
 
-logger3.debug(`This is a log message #${number}`);
-logger3.info(`This is a log message #${number}`);
-logger3.warn(`This is a log message #${number}`);
-logger3.error(`This is a log message #${number}`);
+logger3.debug(`This is a debug message #${number}`);
+logger3.info(`This is an info message #${number}`);
+logger3.warn(`This is a warning message #${number}`);
+logger3.error(`This is an error message #${number}`);
 
-red.debug(`Red log message`);
-green.debug(`Green log message`);
-yellow.debug(`Yellow log message`);
-blue.debug(`Blue log message`);
-magenta.debug(`Magenta log message`);
-cyan.debug(`Cyan log message`);
+red.log(`Red log message`); // log() is an alias for debug()
+green.log(`Green log message`);
+yellow.log(`Yellow log message`);
+blue.log(`Blue log message`);
+magenta.log(`Magenta log message`);
+cyan.log(`Cyan log message`);
