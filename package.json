@@ -1,6 +1,6 @@
 {
   "name": "logplease",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "Simple Javascript logger for Node.js and Browsers",
   "main": "src/index.js",
   "scripts": {
