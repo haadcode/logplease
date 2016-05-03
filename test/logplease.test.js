@@ -251,6 +251,18 @@ describe('logplease', function() {
       assert.equal(out.split(" ")[2], 'test1234:');
       done();
     });
+
+    it('formats strings using %d, %s', (done) => {
+      let out = '';
+      let old = console.log;
+      console.log = (d) => out += d;
+      const log = Logger.create('test1234', { useColors: false });
+      log.debug('hi %d %s', 314, 'THISISASTRING');
+      console.log = old;
+      let result = out.split(' ').slice(3).join(' ');
+      assert.equal(result, 'hi 314 THISISASTRING');
+      done();
+    });
   });
 
   describe('_write', () => {

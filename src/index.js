@@ -1,6 +1,7 @@
 'use strict';
 
 const fs = require('fs');
+const format = require('util').format;
 
 let isNodejs = process.version ? true : false;
 
@@ -68,24 +69,24 @@ class Logger {
     this.options = opts;
   }
 
-  debug(text) {
-    this._write(LogLevels.DEBUG, text);
+  debug() {
+    this._write(LogLevels.DEBUG, format.apply(null, arguments));
   }
 
-  log(text) {
-    this.debug(text);
+  log() {
+    this.debug.apply(this, arguments);
   }
 
-  info(text) {
-    this._write(LogLevels.INFO, text);
+  info() {
+    this._write(LogLevels.INFO, format.apply(null, arguments));
   }
 
-  warn(text) {
-    this._write(LogLevels.WARN, text);
+  warn() {
+    this._write(LogLevels.WARN, format.apply(null, arguments));
   }
 
-  error(text) {
-    this._write(LogLevels.ERROR, text);
+  error() {
+    this._write(LogLevels.ERROR, format.apply(null, arguments));
   }
 
   _write(level, text) {
