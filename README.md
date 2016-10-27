@@ -44,6 +44,8 @@ logger.warn(`This is a warning`);
 logger.error(`This is an error`);
 ```
 
+Default log level is `DEBUG`. You can set the log level with `LOG` environment variable, eg. `LOG=debug node example/example.js`. See [Log levels](#log-levels) for available options.
+
 ### Browser
 Copy `dist/logplease.min.js` to your javascripts directory and include it in your html. See [example/index.html](https://github.com/haadcode/logplease/blob/master/example/index.html) for details.
 
@@ -81,6 +83,17 @@ const options = {
 };
 ```
 
+### Log levels
+```
+DEBUG
+INFO
+WARN
+ERROR
+NONE
+```
+
+Default log level is `DEBUG`. To display errors only, use `ERROR`. To turn off all logging, use `NONE`.
+
 ### Global log level
 You can set a global log level to display only the wanted log messages.
 
@@ -89,15 +102,6 @@ const Logger = require('logplease');
 Logger.setLogLevel(Logger.LogLevels.ERROR) // Show only ERROR messages
 // or
 Logger.setLogLevel('ERROR')
-```
-
-Log levels:
-```
-DEBUG
-INFO
-WARN
-ERROR
-NONE
 ```
 
 You can mute all loggers with log level *NONE*:

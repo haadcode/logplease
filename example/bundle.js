@@ -502,11 +502,12 @@
 	  }, {
 	    key: '_shouldLog',
 	    value: function _shouldLog(level) {
+	      var logLevel = process !== undefined && process.env !== undefined && process.env.LOG !== undefined ? process.env.LOG.toUpperCase() : GlobalLogLevel;
 	      var levels = (0, _keys2.default)(LogLevels).map(function (f) {
 	        return LogLevels[f];
 	      });
 	      var index = levels.indexOf(level);
-	      var levelIdx = levels.indexOf(GlobalLogLevel);
+	      var levelIdx = levels.indexOf(logLevel);
 	      return index >= levelIdx;
 	    }
 	  }]);

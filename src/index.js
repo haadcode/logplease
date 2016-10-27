@@ -202,9 +202,10 @@ class Logger {
   }
 
   _shouldLog(level) {
+    const logLevel = process !== undefined && process.env !== undefined && process.env.LOG !== undefined ? process.env.LOG.toUpperCase() : GlobalLogLevel;
     const levels   = Object.keys(LogLevels).map((f) => LogLevels[f]);
     const index    = levels.indexOf(level);
-    const levelIdx = levels.indexOf(GlobalLogLevel);
+    const levelIdx = levels.indexOf(logLevel);
     return index >= levelIdx;
   }
 };

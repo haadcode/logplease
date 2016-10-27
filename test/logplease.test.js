@@ -316,4 +316,22 @@ describe('logplease', function() {
     });
 
   });
+
+  describe('LOG environment variable', () => {
+    it('logs according to LOG environment variable', (done) => {
+      let out = '';
+      let old = console.log;
+      console.log = (d) => out += d;
+      const log = Logger.create('test1', { showTimestamp: false, useColors: false });
+      Logger.setLogLevel(Logger.LogLevels.NONE);
+      process.env.LOG = 'debug'
+      log.warn("hi");
+      console.log = old;
+      assert.equal(out, '[WARN]  test1: hi');
+      const logfile = 'test123.log';
+      fs.unlinkSync(logfile);
+      done();
+    });
+  });
+
 });
