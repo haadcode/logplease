@@ -17,16 +17,8 @@ module.exports = {
         plugins: ['transform-runtime']
       }
     }, {
-      test: /\.js$/,
-      include: /node_modules\/(hoek|qs|wreck|boom)/,
-      loader: 'babel',
-      query: {
-        presets: ['es2015'],
-        plugins: ['transform-runtime']
-      }
-    }, {
       test: /\.json$/,
       loader: 'json'
     }]
   }
-};
+}
