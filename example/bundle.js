@@ -422,13 +422,13 @@ var Logger = function () {
     value: function _write(level, text) {
       if (!this._shouldLog(level)) return;
 
-      if ((this.options.filename || GlobalLogfile) && !this.fileWriter) this.fileWriter = fs.openSync(this.options.filename || GlobalLogfile, this.options.appendFile ? 'a+' : 'w+');
+      if ((this.options.filename || GlobalLogfile) && !this.fileWriter && isNodejs) this.fileWriter = fs.openSync(this.options.filename || GlobalLogfile, this.options.appendFile ? 'a+' : 'w+');
 
       var format = this._format(level, text);
       var unformattedText = this._createLogMessage(level, text);
       var formattedText = this._createLogMessage(level, text, format.timestamp, format.level, format.category, format.text);
 
-      if (this.fileWriter) fs.writeSync(this.fileWriter, unformattedText + '\n', null, 'utf-8');
+      if (this.fileWriter && isNodejs) fs.writeSync(this.fileWriter, unformattedText + '\n', null, 'utf-8');
 
       if (isNodejs) {
         console.log(formattedText);

@@ -93,14 +93,14 @@ class Logger {
     if(!this._shouldLog(level))
       return;
 
-    if((this.options.filename || GlobalLogfile) && !this.fileWriter)
+    if((this.options.filename || GlobalLogfile) && !this.fileWriter && isNodejs)
       this.fileWriter = fs.openSync(this.options.filename || GlobalLogfile, this.options.appendFile ? 'a+' : 'w+');
 
     let format = this._format(level, text);
     let unformattedText = this._createLogMessage(level, text);
     let formattedText = this._createLogMessage(level, text, format.timestamp, format.level, format.category, format.text);
 
-    if(this.fileWriter)
+    if(this.fileWriter && isNodejs)
       fs.writeSync(this.fileWriter, unformattedText + '\n', null, 'utf-8');
 
     if(isNodejs) {
