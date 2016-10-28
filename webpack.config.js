@@ -27,8 +27,5 @@ module.exports = {
         plugins: require.resolve('babel-plugin-transform-runtime')
       }
     }]
-  },
-  externals: {
-    fs: '{}'
   }
 };
