@@ -175,7 +175,7 @@ class Logger {
     categoryFormat  = categoryFormat  || '';
     textFormat      = textFormat      || ': ';
 
-    if(!isNodejs) {
+    if(!isNodejs && this.options.useColors) {
       if(this.options.showTimestamp)
         timestampFormat = '%c';
 
@@ -202,7 +202,10 @@ class Logger {
   }
 
   _shouldLog(level) {
-    const logLevel = process !== undefined && process.env !== undefined && process.env.LOG !== undefined ? process.env.LOG.toUpperCase() : GlobalLogLevel;
+    let envLogLevel = (typeof process !== "undefined" && process.env !== undefined && process.env.LOG !== undefined) ? process.env.LOG.toUpperCase() : null;
+    envLogLevel = (typeof window !== "undefined" && window.LOG) ? window.LOG.toUpperCase() : envLogLevel;
+
+    const logLevel = envLogLevel || GlobalLogLevel;
     const levels   = Object.keys(LogLevels).map((f) => LogLevels[f]);
     const index    = levels.indexOf(level);
     const levelIdx = levels.indexOf(logLevel);

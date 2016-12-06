@@ -240,6 +240,30 @@ describe('logplease', function() {
       done();
     });
 
+    it('doesn\'t use colors in terminal', (done) => {
+      let out = '';
+      let old = console.log;
+      console.log = (d) => out += d;
+      const log = Logger.create('test1', { useColors: false, showTimestamp: false });
+      log.debug("hi");
+      console.log = old;
+      assert.equal(out, '[DEBUG] test1: hi');
+      done();
+    });
+
+    it('doesn\'t use colors in browser', (done) => {
+      let out = '';
+      let old = console.log;
+      console.log = (d) => out += d;
+      Logger.forceBrowserMode(true);
+      const log = Logger.create('test1', { useColors: false, showTimestamp: false });
+      log.debug("hi");
+      console.log = old;
+      assert.equal(out, '[DEBUG] test1: hi');
+      Logger.forceBrowserMode(false);
+      done();
+    });
+
     it('sets the logger name', (done) => {
       let out = '';
       let old = console.log;

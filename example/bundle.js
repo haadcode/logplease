@@ -502,7 +502,7 @@ var Logger = function () {
       categoryFormat = categoryFormat || '';
       textFormat = textFormat || ': ';
 
-      if (!isNodejs) {
+      if (!isNodejs && this.options.useColors) {
         if (this.options.showTimestamp) timestampFormat = '%c';
 
         if (this.options.showLevel) levelFormat = '%c';
@@ -526,7 +526,10 @@ var Logger = function () {
   }, {
     key: '_shouldLog',
     value: function _shouldLog(level) {
-      var logLevel = process !== undefined && process.env !== undefined && process.env.LOG !== undefined ? process.env.LOG.toUpperCase() : GlobalLogLevel;
+      var envLogLevel = typeof process !== "undefined" && process.env !== undefined && process.env.LOG !== undefined ? process.env.LOG.toUpperCase() : null;
+      envLogLevel = typeof window !== "undefined" && window.LOG ? window.LOG.toUpperCase() : envLogLevel;
+
+      var logLevel = envLogLevel || GlobalLogLevel;
       var levels = (0, _keys2.default)(LogLevels).map(function (f) {
         return LogLevels[f];
       });
