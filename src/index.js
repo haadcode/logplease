@@ -103,7 +103,7 @@ class Logger {
     if(this.fileWriter && isNodejs)
       fs.writeSync(this.fileWriter, unformattedText + '\n', null, 'utf-8');
 
-    if(isNodejs) {
+    if(isNodejs || !this.options.useColors) {
       console.log(formattedText)
     } else {
       // TODO: clean this up
