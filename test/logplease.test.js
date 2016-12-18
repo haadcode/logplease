@@ -5,11 +5,21 @@ const fs = require('fs')
 const stream = require('stream')
 const Logger = require('../src/index')
 
+const logfile = 'test123.log'
+
 describe('logplease', function() {
   this.timeout(1000)
 
   before((done) => {
     done()
+  })
+
+  afterEach(() => {
+    try {
+      fs.statSync(logfile)
+      fs.unlinkSync(logfile)
+    } catch(e) {
+    }
   })
 
   describe('Public API', () => {
@@ -223,7 +233,7 @@ describe('logplease', function() {
       const log = Logger.create('test1', { useColors: true, showTimestamp: false })
       log.debug("hi")
       console.log = old
-      assert.equal(out, '\u001b[3622m[DEBUG] \u001b[391mtest1\u001b[0m: hi')
+      assert.equal(out, '\u001b[36;22m[DEBUG] \u001b[39;1mtest1\u001b[0m: hi')
       done()
     })
 
@@ -291,42 +301,35 @@ describe('logplease', function() {
 
   describe('_write', () => {
     it('creates a log file', (done) => {
-      const logfile = 'test123.log'
       const log = Logger.create('test1', { filename: logfile, appendFile: false, showTimestamp: false })
       assert(!fs.existsSync(logfile))
       log.debug('hello')
       assert(fs.existsSync(logfile))
-      fs.unlinkSync(logfile)
       done()
     })
 
     it('writes to a log file', (done) => {
-      const logfile = 'test123.log'
       const log = Logger.create('test1', { filename: logfile, appendFile: false, showTimestamp: false })
       assert(!fs.existsSync(logfile))
       log.debug('hello')
       assert(fs.existsSync(logfile))
       const f = fs.readFileSync(logfile, 'utf-8')
-      fs.unlinkSync(logfile)
       assert.equal(f, '[DEBUG] test1: hello\n')
       done()
     })
 
     it('appends to a log file', (done) => {
-      const logfile = 'test123.log'
       const log = Logger.create('test1', { filename: logfile, appendFile: true, showTimestamp: false })
       assert(!fs.existsSync(logfile))
       log.debug('hello')
       log.debug('hello2')
       assert(fs.existsSync(logfile))
       const f = fs.readFileSync(logfile, 'utf-8')
-      fs.unlinkSync(logfile)
       assert.equal(f, '[DEBUG] test1: hello\n[DEBUG] test1: hello2\n')
       done()
     })
 
     it('writes to a global log file', (done) => {
-      const logfile = 'test123.log'
       const log1 = Logger.create('test1', { showTimestamp: false })
       const log2 = Logger.create('test2', { showTimestamp: false })
       Logger.setLogfile(logfile)
@@ -334,7 +337,6 @@ describe('logplease', function() {
       log2.debug('hello2')
       assert(fs.existsSync(logfile))
       const f = fs.readFileSync(logfile, 'utf-8')
-      fs.unlinkSync(logfile)
       assert.equal(f, '[DEBUG] test1: hello1\n[DEBUG] test2: hello2\n')
       done()
     })
@@ -352,9 +354,37 @@ describe('logplease', function() {
       log.warn("hi")
       console.log = old
       assert.equal(out, '[WARN]  test1: hi')
-      const logfile = 'test123.log'
-      fs.unlinkSync(logfile)
+      delete process.env.LOG
       done()
+    })
+  })
+
+  describe('emits events', () => {
+    const log = Logger.create('test1', { showTimestamp: false, useColors: false })
+
+    it('emits \'data\'', (done) => {
+      Logger.setLogLevel(Logger.LogLevels.WARN)
+      Logger.events.on('data', (source, level, text) => {
+        assert.equal(source, 'test1')
+        assert.equal(level, 'WARN')
+        assert.equal(text, 'hi')
+        Logger.events.removeAllListeners('data')
+        done()
+      })
+      log.warn("hi")
+    })
+
+    it('doesn\'t emit \'data\' when below log level', (done) => {
+      Logger.setLogLevel(Logger.LogLevels.NONE)
+      Logger.events.on('data', (source, level, text) => {
+        console.log(source)
+        assert.equal('Should not fire data event', null)
+      })
+      log.warn("hi")
+      setTimeout(() => {
+        Logger.events.removeAllListeners('data')
+        done()
+      }, 100)
     })
   })
 

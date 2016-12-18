@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const format = require('util').format;
+const EventEmitter = require('events').EventEmitter;
 
 let isNodejs = process.version ? true : false;
 
@@ -18,6 +19,8 @@ let GlobalLogLevel = LogLevels.DEBUG;
 
 // Global log file name
 let GlobalLogfile = null;
+
+let GlobalEvents = new EventEmitter();
 
 // ANSI colors
 let Colors = {
@@ -105,6 +108,7 @@ class Logger {
 
     if(isNodejs || !this.options.useColors) {
       console.log(formattedText)
+      GlobalEvents.emit('data', this.category, level, text)
     } else {
       // TODO: clean this up
       if(level === LogLevels.ERROR) {
@@ -227,5 +231,6 @@ module.exports = {
     const logger = new Logger(category, options);
     return logger;
   },
-  forceBrowserMode: (force) => isNodejs = !force, // for testing
+  forceBrowserMode: (force) => isNodejs = !force, // for testing,
+  events: GlobalEvents,
 };
