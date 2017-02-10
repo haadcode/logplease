@@ -73,29 +73,31 @@ class Logger {
   }
 
   debug() {
-    this._write(LogLevels.DEBUG, format.apply(null, arguments));
+    if(this._shouldLog(LogLevels.DEBUG))
+      this._write(LogLevels.DEBUG, format.apply(null, arguments));
   }
 
   log() {
-    this.debug.apply(this, arguments);
+    if(this._shouldLog(LogLevels.DEBUG))
+      this.debug.apply(this, arguments);
   }
 
   info() {
-    this._write(LogLevels.INFO, format.apply(null, arguments));
+    if(this._shouldLog(LogLevels.INFO))
+      this._write(LogLevels.INFO, format.apply(null, arguments));
   }
 
   warn() {
-    this._write(LogLevels.WARN, format.apply(null, arguments));
+    if(this._shouldLog(LogLevels.WARN))
+      this._write(LogLevels.WARN, format.apply(null, arguments));
   }
 
   error() {
-    this._write(LogLevels.ERROR, format.apply(null, arguments));
+    if(this._shouldLog(LogLevels.ERROR))
+      this._write(LogLevels.ERROR, format.apply(null, arguments));
   }
 
   _write(level, text) {
-    if(!this._shouldLog(level))
-      return;
-
     if((this.options.filename || GlobalLogfile) && !this.fileWriter && isNodejs)
       this.fileWriter = fs.openSync(this.options.filename || GlobalLogfile, this.options.appendFile ? 'a+' : 'w+');
 
