@@ -8,17 +8,14 @@ module.exports = {
     process: 'mock'
   },
   module: {
-    loaders: [{
+    rules: [{
       test: /\.js$/,
       exclude: /node_modules/,
-      loader: 'babel',
-      query: {
+      loader: 'babel-loader',
+      options: {
         presets: ['es2015'],
         plugins: ['transform-runtime']
       }
-    }, {
-      test: /\.json$/,
-      loader: 'json'
     }]
   }
 }

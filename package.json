@@ -6,10 +6,10 @@
   "scripts": {
     "test": "mocha",
     "example": "node example/example.js",
-    "build": "npm run build:dist && npm run build:examples",
+    "build": "npm run build:dist && npm run build:examples && npm run build:es5",
     "build:dist": "./node_modules/.bin/webpack --config webpack.config.js",
     "build:examples": "./node_modules/.bin/webpack --config webpack.example.config.js",
-    "build:es5": "babel -o ./es5/index.js --presets babel-preset-es2015 ./src/index.js"
+    "build:es5": "babel -o ./es5/index.js --presets babel-preset-es2015 --plugins babel-plugin-transform-runtime ./src/index.js"
   },
   "repository": {
     "type": "git",
