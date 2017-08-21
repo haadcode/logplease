@@ -1,7 +1,11 @@
 'use strict';
 
-/* Usage */
-const Logger = require('../src/index');
+/* 
+  Using the ES5 module for the sake of example. 
+  To use the regular ES6 version, one would include it with:
+  const Logger = require('logplease')
+*/
+const Logger = require('../es5/index');
 
 const logger1  = Logger.create('daemon',  { filename: 'debug.log', useColors: false, appendFile: true });
 const logger2  = Logger.create('utils');

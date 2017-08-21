@@ -46,6 +46,8 @@ logger.error(`This is an error`);
 
 Default log level is `DEBUG`. You can set the log level with `LOG` environment variable, eg. `LOG=debug node example/example.js`. See [Log levels](#log-levels) for available options.
 
+There's an ES5 build in `es5/` which you can include if you need ES5 compatibility, eg. with Webpack.
+
 ### Browser
 Copy `dist/logplease.min.js` to your javascripts directory and include it in your html. See [example/index.html](https://github.com/haadcode/logplease/blob/master/example/index.html) for details.
 
