@@ -2,7 +2,7 @@
   "name": "logplease",
   "version": "1.2.14",
   "description": "Simple Javascript logger for Node.js and Browsers",
-  "main": "src/index.js",
+  "main": "dist/logplease.min.js",
   "scripts": {
     "test": "mocha",
     "example": "node example/example.js",
