@@ -18,11 +18,11 @@ module.exports = {
     })
   ],
   module: {
-    loaders: [{
+    rules: [{
       test: /\.js$/,
       exclude: /node_modules/,
-      loader: 'babel',
-      query: {
+      loader: 'babel-loader',
+      options: {
         presets: require.resolve('babel-preset-es2015'),
         plugins: require.resolve('babel-plugin-transform-runtime')
       }
