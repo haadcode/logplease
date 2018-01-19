@@ -70,6 +70,11 @@ class Logger {
     Object.assign(opts, defaultOptions);
     Object.assign(opts, options);
     this.options = opts;
+    this.debug = this.debug.bind(this);
+    this.log = this.log.bind(this);
+    this.info = this.info.bind(this);
+    this.warn = this.warn.bind(this);
+    this.error = this.error.bind(this);
   }
 
   debug() {
