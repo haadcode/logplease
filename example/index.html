@@ -8,6 +8,7 @@
       var logger1  = Logger.create('daemon',  { useColors: false });
       var logger2  = Logger.create('utils');
       var logger3  = Logger.create('logger3', { color: Logger.Colors.Magenta, showTimestamp: false, showLevel: false });
+      var logger4  = Logger.create('logger4', { useLocalTime: true });
 
       logger1.debug(`This is a log message`);
       logger1.info(`This is a log message`);
@@ -23,6 +24,11 @@
       logger3.info(`This is a log message`);
       logger3.warn(`This is a log message`);
       logger3.error(`This is a log message`);
+
+      logger4.debug(`This is a log message`);
+      logger4.info(`This is a log message`);
+      logger4.warn(`This is a log message`);
+      logger4.error(`This is a log message`);
 
       var red     = Logger.create('red', { color: Logger.Colors.Red, showTimestamp: false, showLevel: false });
       var green   = Logger.create('green', { color: Logger.Colors.Green, showTimestamp: false, showLevel: false });

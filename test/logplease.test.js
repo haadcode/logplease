@@ -69,6 +69,7 @@ describe('logplease', function() {
         useColors: false,
         color: Logger.Colors.Yellow,
         showTimestamp: false,
+        useLocalTime: true,
         showLevel: false,
         filename: 'test.log',
         appendFile: false,
@@ -79,6 +80,7 @@ describe('logplease', function() {
       assert.equal(log.options.useColors, false)
       assert.equal(log.options.color, Logger.Colors.Yellow)
       assert.equal(log.options.showTimestamp, false)
+      assert.equal(log.options.useLocalTime, true)
       assert.equal(log.options.showLevel, false)
       assert.equal(log.options.filename, 'test.log')
       assert.equal(log.options.appendFile, false)
@@ -96,6 +98,7 @@ describe('logplease', function() {
       assert.equal(log.options.useColors, false)
       assert.equal(log.options.color, Logger.Colors.Yellow)
       assert.equal(log.options.showTimestamp, true)
+      assert.equal(log.options.useLocalTime, false)
       assert.equal(log.options.showLevel, true)
       assert.equal(log.options.filename, null)
       assert.equal(log.options.appendFile, true)
@@ -178,15 +181,36 @@ describe('logplease', function() {
       done()
     })
 
-    it('writes timestamp', (done) => {
+    it('writes timestamp in iso time', (done) => {
       let out = ''
       let old = console.log
+      // ignore seconds when comparing times
+      let isoTime = new Date().toISOString().slice(0, 19)
       console.log = (d) => out += d
       const log = Logger.create('test1')
       log.debug("hi")
       console.log = old
       assert.equal(out.split(" ").length, 4)
       assert.equal(out.split(" ")[3], 'hi')
+      let loggedTime = out.split(" ")[0].replace('\u001b[37m', '').slice(0, 19)
+      assert.equal(isoTime, loggedTime)
+      done()
+    })
+
+    it('writes timestamp in local time', (done) => {
+      let out = ''
+      let old = console.log
+      let localTime = new Date().toLocaleString()
+      console.log = (d) => out += d
+      const log = Logger.create('test1', {useLocalTime: true})
+      log.debug("hi")
+      console.log = old
+      let logArray = out.split(" ")
+      // extra space in local time increases length
+      assert.equal(logArray.length, 5)
+      assert.equal(logArray[4], 'hi')
+      let loggedTime = logArray.slice(0, 2).join(' ').replace('\u001b[37m', '')
+      assert.equal(localTime, loggedTime)
       done()
     })
 

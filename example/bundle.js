@@ -318,8 +318,8 @@ exports.f = __webpack_require__(1) ? Object.defineProperty : function defineProp
 "use strict";
 
 
-/* 
-  Using the ES5 module for the sake of example. 
+/*
+  Using the ES5 module for the sake of example.
   To use the regular ES6 version, one would include it with:
   const Logger = require('logplease')
 */
@@ -329,6 +329,7 @@ var Logger = __webpack_require__(15);
 var logger1 = Logger.create('daemon', { filename: 'debug.log', useColors: false, appendFile: true });
 var logger2 = Logger.create('utils');
 var logger3 = Logger.create('logger3', { color: Logger.Colors.Magenta, showTimestamp: false, showLevel: false });
+var logger4 = Logger.create('logger4-local-time', { useLocalTime: true });
 
 var red = Logger.create('red', { color: Logger.Colors.Red, showTimestamp: false, showLevel: false });
 var green = Logger.create('green', { color: Logger.Colors.Green, showTimestamp: false, showLevel: false });
@@ -355,6 +356,11 @@ logger3.debug('This is a debug message #' + number);
 logger3.info('This is an info message #' + number);
 logger3.warn('This is a warning message #' + number);
 logger3.error('This is an error message #' + number);
+
+logger4.debug('This is a debug message #' + number);
+logger4.info('This is an info message #' + number);
+logger4.warn('This is a warning message #' + number);
+logger4.error('This is an error message #' + number);
 
 red.log('Red log message'); // log() is an alias for debug()
 green.log('Green log message');
@@ -448,6 +454,7 @@ var defaultOptions = {
   useColors: true,
   color: Colors.Default,
   showTimestamp: true,
+  useLocalTime: false,
   showLevel: true,
   filename: GlobalLogfile,
   appendFile: true
@@ -584,7 +591,9 @@ var Logger = function () {
 
       var result = '';
 
-      if (this.options.showTimestamp) result += '' + new Date().toISOString() + ' ';
+      if (this.options.showTimestamp && !this.options.useLocalTime) result += '' + new Date().toISOString() + ' ';
+
+      if (this.options.showTimestamp && this.options.useLocalTime) result += '' + new Date().toLocaleString() + ' ';
 
       result = timestampFormat + result;
 
