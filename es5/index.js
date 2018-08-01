@@ -77,6 +77,7 @@ var defaultOptions = {
   useColors: true,
   color: Colors.Default,
   showTimestamp: true,
+  useLocalTime: false,
   showLevel: true,
   filename: GlobalLogfile,
   appendFile: true
@@ -213,7 +214,9 @@ var Logger = function () {
 
       var result = '';
 
-      if (this.options.showTimestamp) result += '' + new Date().toISOString() + ' ';
+      if (this.options.showTimestamp && !this.options.useLocalTime) result += '' + new Date().toISOString() + ' ';
+
+      if (this.options.showTimestamp && this.options.useLocalTime) result += '' + new Date().toLocaleString() + ' ';
 
       result = timestampFormat + result;
 
