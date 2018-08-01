@@ -206,10 +206,8 @@ describe('logplease', function() {
       log.debug("hi")
       console.log = old
       let logArray = out.split(" ")
-      // extra space in local time increases length
-      assert.equal(logArray.length, 5)
-      assert.equal(logArray[4], 'hi')
-      let loggedTime = logArray.slice(0, 2).join(' ').replace('\u001b[37m', '')
+      assert.equal(logArray[logArray.length - 1], 'hi')
+      let loggedTime = logArray.slice(0, logArray.length - 3).join(' ').replace('\u001b[37m', '')
       assert.equal(localTime, loggedTime)
       done()
     })
