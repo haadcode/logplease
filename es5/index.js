@@ -22,7 +22,8 @@ var fs = require('fs');
 var format = require('util').format;
 var EventEmitter = require('events').EventEmitter;
 
-var isNodejs = process.version ? true : false;
+var isElectronRenderer = process.type && process.type === 'renderer';
+var isNodejs = !isElectronRenderer && process.version ? true : false;
 
 var LogLevels = {
   'DEBUG': 'DEBUG',

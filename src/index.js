@@ -4,7 +4,8 @@ const fs = require('fs');
 const format = require('util').format;
 const EventEmitter = require('events').EventEmitter;
 
-let isNodejs = process.version ? true : false;
+let isElectronRenderer = process.type && process.type === 'renderer';
+let isNodejs = !isElectronRenderer && process.version ? true : false;
 
 const LogLevels = {
   'DEBUG': 'DEBUG',

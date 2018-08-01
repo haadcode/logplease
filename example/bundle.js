@@ -400,7 +400,8 @@ var fs = __webpack_require__(50);
 var format = __webpack_require__(51).format;
 var EventEmitter = __webpack_require__(55).EventEmitter;
 
-var isNodejs = process.version ? true : false;
+var isElectronRenderer = process.type && process.type === 'renderer';
+var isNodejs = !isElectronRenderer && process.version ? true : false;
 
 var LogLevels = {
   'DEBUG': 'DEBUG',
