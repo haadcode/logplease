@@ -150,9 +150,22 @@ Black, Red, Green, Yellow, Blue, Magenta, Cyan, Grey, White
 ```
 
 ### Tests
-Run tests with:
+Run all tests with:
+
 ```
-npm test
+npm run test
+```
+
+Run terminal tests with:
+
+```
+npm run test-terminal
+```
+
+Run browser tests with:
+
+```
+npm run test-browser
 ```
 
 ### Build
