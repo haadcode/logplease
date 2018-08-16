@@ -105,15 +105,17 @@ class Logger {
   }
 
   _write(level, text) {
-    if((this.options.filename || GlobalLogfile) && !this.fileWriter && isNodejs)
+    if((this.options.filename || GlobalLogfile) && !this.fileWriter && (isNodejs || isElectronRenderer))
       this.fileWriter = fs.openSync(this.options.filename || GlobalLogfile, this.options.appendFile ? 'a+' : 'w+');
 
     let format = this._format(level, text);
     let unformattedText = this._createLogMessage(level, text);
     let formattedText = this._createLogMessage(level, text, format.timestamp, format.level, format.category, format.text);
 
-    if(this.fileWriter && isNodejs)
+    if(this.fileWriter && (isNodejs || isElectronRenderer)) {
+      if (isElectronRenderer) { unformattedText = unformattedText.replace(/\%c/gm, ''); }
       fs.writeSync(this.fileWriter, unformattedText + '\n', null, 'utf-8');
+    }
 
     if(isNodejs || !this.options.useColors) {
       console.log(formattedText)
