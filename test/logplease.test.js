@@ -340,6 +340,17 @@ describe('logplease', function() {
       done()
     })
 
+    it('writes to log file when in electron renderer process', (done) => {
+      process.type = 'renderer';
+      const log = Logger.create('test1', { filename: logfile, appendFile: false, showTimestamp: false })
+      assert(!fs.existsSync(logfile))
+      log.debug('hello')
+      assert(fs.existsSync(logfile))
+      const f = fs.readFileSync(logfile, 'utf-8')
+      assert.equal(f, '[DEBUG] test1: hello\n')
+      done()
+    });
+
     it('appends to a log file', (done) => {
       const log = Logger.create('test1', { filename: logfile, appendFile: true, showTimestamp: false })
       assert(!fs.existsSync(logfile))
