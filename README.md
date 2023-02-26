@@ -35,7 +35,8 @@ Open `example/index.html` in your browser.
 See [example/example.js](https://github.com/haadcode/logplease/blob/master/example/example.js) for details.
 
 ```javascript
-const Logger = require('logplease');
+import * as Logger from 'logplease';
+
 const logger = Logger.create('utils');
 logger.debug(`This is a debug message`);
 logger.log(`This is a log message`); // alias for debug()
@@ -53,9 +54,9 @@ Copy `dist/logplease.min.js` to your javascripts directory and include it in you
 
 ```html
 <body>
-  <script type="text/javascript" src="dist/logplease.min.js" charset="utf-8"></script>
-  <script type="text/javascript">
-    var logger  = Logger.create('logger name');
+  <script type="module" src="dist/logplease.min.js"></script>
+  <script type="module">
+    import * as Logger from "dist/logplease.min.js";
     logger.debug(`This is a debug message`);
     logger.log(`This is a log message`); // alias for debug()
     logger.info(`This is a info message`);
@@ -69,7 +70,7 @@ Copy `dist/logplease.min.js` to your javascripts directory and include it in you
 You can customize your logger to not show the timestamp or the log level, disable colors or specify, if using a log file, to overwrite the log file at start instead of appending to it.
 
 ```javascript
-const Logger = require('logplease');
+import * as Logger from 'logplease';
 const logger = Logger.create("logger name", options);
 ```
 
@@ -101,7 +102,7 @@ Default log level is `DEBUG`. To display errors only, use `ERROR`. To turn off a
 You can set a global log level to display only the wanted log messages.
 
 ```javascript
-const Logger = require('logplease');
+import * as Logger from 'logplease';
 Logger.setLogLevel(Logger.LogLevels.ERROR) // Show only ERROR messages
 // or
 Logger.setLogLevel('ERROR')
@@ -116,7 +117,7 @@ Logger.setLogLevel(Logger.LogLevels.NONE) // output nothing
 You can set a global log file to which all loggers write to.
 
 ```javascript
-const Logger = require('logplease');
+import * as Logger from 'logplease';
 const logger1 = Logger.create("logger1");
 const logger2 = Logger.create("logger2");
 Logger.setLogfile('debug.log');
@@ -129,7 +130,7 @@ logger2.debug('hello world 2');
 You can set a log file per logger.
 
 ```javascript
-const Logger = require('logplease');
+import * as Logger from 'logplease';
 const logger1 = Logger.create("logger1", { filename: 'debug.log' });
 const logger2 = Logger.create("logger2");
 logger1.debug('hello world 1'); // writes to 'debug.log'
@@ -140,7 +141,7 @@ logger2.debug('hello world 2'); // doesn't write to 'debug.log'
 You can set a color per logger. Default color in Node.js is *White* and in the browser *Black*.
 
 ```javascript
-const Logger = require('logplease');
+import * as Logger from 'logplease';
 const logger = Logger.create("logger name", { color: Logger.Colors.Yellow });
 ```
 

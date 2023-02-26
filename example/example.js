@@ -1,25 +1,20 @@
 'use strict';
 
-/*
-  Using the ES5 module for the sake of example.
-  To use the regular ES6 version, one would include it with:
-  const Logger = require('logplease')
-*/
-const Logger = require('../es5/index');
+import { create, Colors, setLogLevel, LogLevels } from '../dist/index';
 
-const logger1  = Logger.create('daemon',  { filename: 'debug.log', useColors: false, appendFile: true });
-const logger2  = Logger.create('utils');
-const logger3  = Logger.create('logger3', { color: Logger.Colors.Magenta, showTimestamp: false, showLevel: false });
-const logger4  = Logger.create('logger4-local-time', { useLocalTime: true });
+const logger1  = create('daemon',  { filename: 'debug.log', useColors: false, appendFile: true });
+const logger2  = create('utils');
+const logger3  = create('logger3', { color: Colors.Magenta, showTimestamp: false, showLevel: false });
+const logger4  = create('logger4-local-time', { useLocalTime: true });
 
-const red     = Logger.create('red', { color: Logger.Colors.Red, showTimestamp: false, showLevel: false });
-const green   = Logger.create('green', { color: Logger.Colors.Green, showTimestamp: false, showLevel: false });
-const yellow  = Logger.create('yellow', { color: Logger.Colors.Yellow, showTimestamp: false, showLevel: false });
-const blue    = Logger.create('blue', { color: Logger.Colors.Blue, showTimestamp: false, showLevel: false });
-const magenta = Logger.create('magenta', { color: Logger.Colors.Magenta, showTimestamp: false, showLevel: false });
-const cyan    = Logger.create('cyan', { color: Logger.Colors.Cyan, showTimestamp: false, showLevel: false });
+const red     = create('red', { color: Colors.Red, showTimestamp: false, showLevel: false });
+const green   = create('green', { color: Colors.Green, showTimestamp: false, showLevel: false });
+const yellow  = create('yellow', { color: Colors.Yellow, showTimestamp: false, showLevel: false });
+const blue    = create('blue', { color: Colors.Blue, showTimestamp: false, showLevel: false });
+const magenta = create('magenta', { color: Colors.Magenta, showTimestamp: false, showLevel: false });
+const cyan    = create('cyan', { color: Colors.Cyan, showTimestamp: false, showLevel: false });
 
-Logger.setLogLevel(Logger.LogLevels.DEBUG)
+setLogLevel(LogLevels.DEBUG)
 
 // CAVEAT: log functions can't take any parameters, if you need params, use interpolated strings
 const number = 5;

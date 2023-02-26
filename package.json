@@ -2,7 +2,8 @@
   "name": "logplease",
   "version": "1.2.15",
   "description": "Simple Javascript logger for Node.js and Browsers",
-  "main": "src/index.js",
+  "module": "dist/index.js",
+  "type": "module",
   "scripts": {
     "test": "mocha",
     "example": "node example/example.js",
@@ -13,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/haadcode/logplease.git"
+    "url": "git+https://github.com/endercheif/logplease.git"
   },
   "browser": {
     "fs": false
@@ -21,22 +22,17 @@
   "keywords": [
     "log",
     "logger",
-    "logging"
+    "logging",
+    "logplease"
   ],
-  "author": "Haad",
+  "author": "Endercheif",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/haadcode/logplease/issues"
+    "url": "https://github.com/endercheif/logplease/issues"
   },
-  "homepage": "https://github.com/haadcode/logplease#readme",
+  "homepage": "https://github.com/endercheif/logplease#readme",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-es2015": "^6.24.1",
-    "buffer": "^5.0.7",
-    "mocha": "^5.2.0",
-    "webpack": "^3.5.5"
+    "@types/node": "^18.14.0",
+    "typescript": "^4.9.5"
   }
 }
